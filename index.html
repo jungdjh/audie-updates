@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Audie for Mac</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Audie records your meetings on your Mac and writes the transcript while people talk. Claude can read it.">
+<!-- Unlisted page for invited testers (GitHub Pages, no custom domain). Draft v4, 2026-11-12.
+     Screenshots are real: Audie 0.4.4 recording a demo meeting. Light by default; dark only when chosen. -->
+<link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: Apple-style product page. Big bold centered statements, lots of air, the real app as the
+   picture. One moving idea throughout: speech turning into text (the hero ribbon, the typed lines). */
+:root {
+  --bg: #FFFFFF;
+  --alt: #F5F5F7;          /* alternate band */
+  --ink: #1D1D1F;
+  --gray: #6E6E73;
+  --line: #D2D2D7;
+  --rec: #D0613E;          /* Audie's record color: the wave and the dot, nothing else */
+  --pill: #1D1D1F;         /* the recording pill */
+  --pill-ink: #F5F5F7;
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --bg: #000000; --alt: #111113; --ink: #F5F5F7; --gray: #A1A1A6; --line: #3A3A3C;
+  --rec: #E2734F; --pill: #F5F5F7; --pill-ink: #1D1D1F; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 19px/1.47 var(--font); letter-spacing: -0.012em; -webkit-font-smoothing: antialiased; overflow-x: hidden; transition: background .3s, color .3s; }
+a { color: inherit; }
+p { margin: 0; }
+:focus-visible { outline: 2px solid var(--rec); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); }
+
+/* Header */
+header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 82%, transparent); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); border-bottom: 1px solid color-mix(in srgb, var(--line) 50%, transparent); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+header .wrap { display: flex; align-items: center; justify-content: space-between; height: 52px; gap: 16px; }
+.name { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: 17px; text-decoration: none; }
+.name img { width: 26px; height: 26px; }
+.right { display: flex; align-items: center; gap: 18px; font-size: 13px; }
+.right a.link { text-decoration: none; color: var(--gray); }
+.right a.link:hover { color: var(--ink); }
+@media (max-width: 560px) { .right a.link { display: none; } }
+.small-btn { background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 500; font-size: 13px; padding: 6px 14px; border-radius: 999px; }
+.theme { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--line); background: transparent; color: var(--ink); display: grid; place-items: center; cursor: pointer; padding: 0; }
+.theme svg { width: 15px; height: 15px; }
+.theme .moon { display: block; } .theme .sun { display: none; }
+:root[data-theme="dark"] .theme .moon { display: none; } :root[data-theme="dark"] .theme .sun { display: block; }
+
+/* Hero */
+.hero { text-align: center; padding-block: 96px 0; display: grid; justify-items: center; gap: 22px; }
+.hero .icon { width: 84px; height: 84px; }
+h1 { margin: 0; font-size: clamp(46px, 8.4vw, 96px); line-height: 1.02; font-weight: 700; letter-spacing: -0.032em; max-width: 12ch; text-wrap: balance; }
+.sub { font-size: clamp(21px, 2.4vw, 28px); line-height: 1.25; font-weight: 500; color: var(--gray); letter-spacing: -0.02em; max-width: 30ch; text-wrap: balance; }
+.cta { display: grid; justify-items: center; gap: 12px; margin-top: 10px; }
+.button { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--bg); text-decoration: none; font-weight: 600; font-size: 18px; padding: 15px 28px; border-radius: 999px; transition: transform .2s ease; }
+.button:hover { transform: scale(1.03); }
+.cta small { font-size: 14px; color: var(--gray); }
+
+/* The ribbon: Audie's recording pill in the middle; finished lines stream out of it. */
+.ribbon { position: relative; margin-top: 72px; height: 76px; overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+.ribbon .left { position: absolute; inset: 0 50% 0 0; overflow: hidden; }
+.ribbon .in { position: absolute; top: 50%; left: 50%; right: 0; transform: translateY(-50%); display: flex; align-items: center; gap: 5px; padding-left: 120px; height: 40px; overflow: hidden; }
+.ribbon .in b { flex: none; width: 3px; border-radius: 3px; background: var(--rec); opacity: .55; height: 4px; }
+.stream { position: absolute; top: 50%; left: 100%; display: flex; gap: 56px; white-space: nowrap; transform: translate(0, -50%); font-size: 21px; font-weight: 500; letter-spacing: -0.015em; will-change: transform; }
+.stream span { color: var(--ink); }
+.stream span.ko { color: var(--gray); }
+.pill { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2; display: flex; align-items: center; gap: 12px; background: var(--pill); color: var(--pill-ink); border-radius: 999px; padding: 12px 20px 12px 16px; box-shadow: 0 0 0 14px var(--bg), 0 10px 30px rgba(0,0,0,.18); }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rec); animation: pulse 1.6s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .35; } }
+.pill .t { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; letter-spacing: 0; }
+.wave { display: flex; align-items: center; gap: 3px; height: 26px; }
+.wave b { width: 3px; border-radius: 3px; background: var(--rec); height: 4px; transition: height .1s ease-out; }
+
+/* Product shot */
+.shot-wrap { padding-block: 88px 0; }
+.shot { display: block; width: 100%; height: auto; transform-origin: 50% 0; will-change: transform; filter: drop-shadow(0 30px 60px rgba(0,0,0,.18)); }
+.caption { text-align: center; color: var(--gray); font-size: 15px; margin-top: 22px; }
+
+/* Statement bands */
+.band { padding-block: 140px; padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); text-align: center; display: grid; justify-items: center; gap: 22px; }
+.band.alt { background: var(--alt); }
+h2 { margin: 0; font-size: clamp(40px, 6vw, 72px); line-height: 1.05; font-weight: 700; letter-spacing: -0.03em; max-width: 14ch; text-wrap: balance; }
+.band .sub { max-width: 34ch; }
+
+/* Facts row */
+.facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; margin-top: 56px; width: 100%; max-width: 900px; }
+.fact { display: grid; gap: 6px; justify-items: center; }
+.fact .n { font-size: clamp(48px, 6vw, 72px); font-weight: 700; letter-spacing: -0.04em; line-height: 1; }
+.fact .n small { font-size: .45em; letter-spacing: -0.02em; margin-left: 4px; }
+.fact p { color: var(--gray); font-size: 16px; max-width: 22ch; }
+@media (max-width: 700px) { .facts { grid-template-columns: 1fr; gap: 36px; } }
+
+/* Translation demo */
+.trans { margin-top: 56px; width: 100%; max-width: 760px; display: grid; gap: 30px; text-align: left; }
+.tl { display: grid; gap: 6px; }
+.tl .who { font-size: 14px; color: var(--gray); font-variant-numeric: tabular-nums; }
+.tl .en { font-size: clamp(22px, 2.8vw, 30px); font-weight: 600; letter-spacing: -0.025em; line-height: 1.2; min-height: 1.2em; }
+.tl .ko { font-size: 18px; color: var(--gray); }
+.caret::after { content: ""; display: inline-block; width: 3px; height: .9em; margin-left: 3px; vertical-align: -.08em; background: var(--rec); animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* Small bar */
+.bar { display: block; width: 100%; max-width: 560px; height: auto; margin-top: 48px; filter: drop-shadow(0 20px 40px rgba(0,0,0,.2)); }
+
+/* Claude exchange */
+.chat { margin-top: 56px; width: 100%; max-width: 720px; display: grid; gap: 16px; text-align: left; }
+.msg { border-radius: 22px; padding: 16px 22px; font-size: 19px; line-height: 1.45; max-width: 88%; }
+.msg.you { justify-self: end; background: var(--ink); color: var(--bg); border-bottom-right-radius: 6px; }
+.msg.claude { justify-self: start; background: var(--bg); border: 1px solid var(--line); border-bottom-left-radius: 6px; }
+.msg .from { display: block; font-size: 13px; font-weight: 600; color: var(--gray); margin-bottom: 4px; }
+.band.alt .msg.claude { background: var(--bg); }
+
+/* Steps */
+.steps { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: center; text-align: left; margin-top: 56px; width: 100%; max-width: 1000px; }
+.steps ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 28px; counter-reset: n; }
+.steps li { counter-increment: n; display: grid; grid-template-columns: 44px 1fr; gap: 14px; }
+.steps li::before { content: counter(n); font-size: 28px; font-weight: 700; letter-spacing: -0.03em; color: var(--rec); line-height: 1.1; }
+.steps b { display: block; font-size: 21px; letter-spacing: -0.02em; }
+.steps span { color: var(--gray); font-size: 17px; }
+.welcome { display: block; width: 100%; max-width: 480px; height: auto; border-radius: 16px; justify-self: center; box-shadow: 0 30px 60px -20px rgba(0,0,0,.3); }
+@media (max-width: 820px) { .steps { grid-template-columns: 1fr; gap: 48px; } }
+
+/* FAQ */
+.faq { margin-top: 48px; width: 100%; max-width: 760px; text-align: left; border-top: 1px solid var(--line); }
+.faq details { border-bottom: 1px solid var(--line); }
+.faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 22px; font-size: 21px; font-weight: 600; letter-spacing: -0.02em; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; width: 10px; height: 10px; border-right: 2px solid var(--gray); border-bottom: 2px solid var(--gray); transform: rotate(45deg) translateY(-3px); transition: transform .25s; flex: none; }
+.faq details[open] summary::after { transform: rotate(-135deg); }
+.faq details p { color: var(--gray); padding-bottom: 22px; max-width: 60ch; }
+
+/* End */
+.end .addr { font-weight: 600; color: var(--ink); }
+footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size: 13px; color: var(--gray); }
+
+/* Scroll reveal: elements rise slightly when they come into view. They're visible without it. */
+.rise { transition: transform .9s cubic-bezier(.2,.7,.2,1), opacity .9s; }
+.rise.pre { transform: translateY(28px); opacity: .001; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .dot, .caret::after { animation: none; }
+  .rise, .rise.pre { transform: none; opacity: 1; transition: none; }
+  .button:hover { transform: none; }
+}
+</style>
+
+<header>
+  <div class="wrap">
+    <a class="name" href="#top"><img src="icon.png" alt="" width="26" height="26">Audie</a>
+    <div class="right">
+      <a class="link" href="#start">Get started</a>
+      <a class="link" href="#faq">Questions</a>
+      <button class="theme" id="theme" type="button" aria-label="Switch to dark mode">
+        <svg class="moon" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.5 10.2A6 6 0 0 1 5.8 2.5a6 6 0 1 0 7.7 7.7z" fill="currentColor"/></svg>
+        <svg class="sun" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3.2" fill="currentColor"/><g stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3 3l1.1 1.1M11.9 11.9 13 13M3 13l1.1-1.1M11.9 4.1 13 3"/></g></svg>
+      </button>
+      <a class="small-btn" href="https://github.com/jungdjh/audie-updates/releases/latest/download/Audie.dmg">Download</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="wrap hero">
+    <img class="icon" src="icon.png" alt="" width="84" height="84">
+    <h1>Every meeting, written down live.</h1>
+    <p class="sub">Audie records the call on your Mac and turns it into text as people speak. Claude can read every word.</p>
+    <div class="cta">
+      <a class="button" href="https://github.com/jungdjh/audie-updates/releases/latest/download/Audie.dmg">Download for Mac</a>
+      <small>Version 0.4.4, 3.5 MB. Free while in testing.</small>
+    </div>
+  </section>
+
+  <div class="ribbon" aria-label="Audie recording, with transcript lines streaming out">
+    <div class="left"><div class="stream" id="stream" aria-hidden="true"></div></div>
+    <div class="in" id="in" aria-hidden="true"></div>
+    <div class="pill"><span class="dot"></span><span class="t" id="clock">00:14:32</span><div class="wave" id="wave"></div></div>
+  </div>
+
+  <div class="wrap shot-wrap">
+    <img class="shot" id="shot" src="window.png" width="1440" height="1024" alt="Audie recording a meeting. Finished lines are white; the last line, still being spoken, is gray.">
+    <p class="caption">A real recording. Gray words are still being spoken. They turn white when the sentence ends.</p>
+  </div>
+
+  <section class="band">
+    <h2 class="rise">No bot joins the call.</h2>
+    <p class="sub rise">Audie listens to what your Mac plays and to your microphone. Zoom, Teams, Meet, FaceTime. Nobody new in the participant list.</p>
+    <div class="facts">
+      <div class="fact rise"><span class="n">2<small>sec</small></span><p>until the first words appear on screen</p></div>
+      <div class="fact rise"><span class="n">0</span><p>bots, screen recordings, or accounts</p></div>
+      <div class="fact rise"><span class="n">100<small>%</small></span><p>of the audio stays on your Mac</p></div>
+    </div>
+  </section>
+
+  <section class="band alt">
+    <h2 class="rise">Words appear as they're said.</h2>
+    <p class="sub rise">You see the first words about two seconds after someone starts talking. When they finish the sentence, it settles into the transcript.</p>
+    <div class="trans" id="trans">
+      <div class="tl"><span class="who">the Seoul team · 0:12</span><span class="en" data-type>Great. How many testers are we starting with?</span></div>
+      <div class="tl"><span class="who">the Seoul team · 0:33</span><span class="en" data-type>Perfect. And the privacy page needs one more review before we share the link.</span></div>
+    </div>
+  </section>
+
+  <section class="band">
+    <h2 class="rise">Small while you talk.</h2>
+    <p class="sub rise">During a call Audie is a slim bar with a timer and a sound wave. Open the full window when you want to read along.</p>
+    <img class="bar rise" src="bar.png" width="840" height="172" alt="Audie's small recording bar with a timer, the meeting name, pause, stop and a sound wave.">
+  </section>
+
+  <section class="band alt">
+    <h2 class="rise">Ask Claude what was said.</h2>
+    <p class="sub rise">Claude can start a recording and read the transcript, even while the meeting is still going.</p>
+    <div class="chat" id="chat">
+      <div class="msg you rise">Who's doing what after this call?</div>
+      <div class="msg claude rise"><span class="from">Claude</span><span data-type>The Seoul team has the beta build ready by Friday and sends the tester invitations Monday morning. Legal reviews the privacy page by Wednesday. You're sending a summary after the call.</span></div>
+    </div>
+    <p class="caption rise">Works with Claude Code in one click. Without it, Open in Claude copies the transcript for you.</p>
+  </section>
+
+  <section class="band">
+    <h2 class="rise">Your Mac. Your files.</h2>
+    <p class="sub rise">No account and no Audie server. Recordings are ordinary files in a folder on your Mac. Transcript text goes to Anthropic only when you ask Claude to read it.</p>
+  </section>
+
+  <section class="band alt" id="start">
+    <h2 class="rise">Ready in a minute.</h2>
+    <div class="steps">
+      <ol>
+        <li class="rise"><div><b>Download and drag to Applications.</b><span>Signed by the developer and checked by Apple.</span></div></li>
+        <li class="rise"><div><b>Allow the two permissions.</b><span>A short guide walks you through System Audio Recording and the Microphone.</span></div></li>
+        <li class="rise"><div><b>Let the speech model download.</b><span>1.5 GB, once. You can record while it downloads.</span></div></li>
+        <li class="rise"><div><b>Connect Claude, if you like.</b><span>Optional. After this, Audie keeps itself up to date.</span></div></li>
+      </ol>
+      <img class="welcome rise" src="welcome.jpg" width="560" height="540" alt="Audie's welcome guide with its four steps.">
+    </div>
+  </section>
+
+  <section class="band" id="faq">
+    <h2 class="rise">Questions.</h2>
+    <div class="faq">
+      <details><summary>Which Macs does it run on?</summary><p>Macs with Apple silicon (M1 or later) on macOS 14.2 or later, with about 2 GB free.</p></details>
+      <details><summary>Do I need to tell people I'm recording?</summary><p>Yes. Many places require everyone's consent, and your workplace may have its own rules. Audie reminds you every time you start.</p></details>
+      <details><summary>Which languages does it understand?</summary><p>English, Korean, and a mix of the two in the same meeting.</p></details>
+      <details><summary>What does it cost?</summary><p>Nothing. Audie is free while it's tested with a small group.</p></details>
+      <details><summary>My work network blocked the speech model.</summary><p>Email David for the model file, then use Settings › Speech › Import.</p></details>
+    </div>
+  </section>
+
+  <section class="band alt end">
+    <h2 class="rise">Try it in your next meeting.</h2>
+    <a class="button rise" href="https://github.com/jungdjh/audie-updates/releases/latest/download/Audie.dmg">Download for Mac</a>
+    <p class="sub rise" style="font-size:19px">Questions or problems? Email David at <a class="addr" href="mailto:jungdjh@gmail.com?subject=Audie">jungdjh@gmail.com</a>.</p>
+  </section>
+
+  <footer>
+    <div class="wrap">Audie is made by David Jung. It's an independent project and isn't made by Anthropic.</div>
+  </footer>
+</main>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Theme: light unless the visitor picks dark (remembered on this browser).
+  const btn = document.getElementById("theme");
+  const apply = t => {
+    if (t === "dark") root.setAttribute("data-theme", "dark"); else root.removeAttribute("data-theme");
+    btn.setAttribute("aria-label", t === "dark" ? "Switch to light mode" : "Switch to dark mode");
+  };
+  let saved = null; try { saved = localStorage.getItem("audie-theme"); } catch (e) {}
+  apply(saved === "dark" ? "dark" : "light");
+  btn.addEventListener("click", () => {
+    const next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    apply(next); try { localStorage.setItem("audie-theme", next); } catch (e) {}
+  });
+
+  // The recording pill: wave and clock.
+  const wave = document.getElementById("wave");
+  const bars = Array.from({ length: 14 }, () => wave.appendChild(document.createElement("b")));
+  let t = 0;
+  const drawWave = () => { t++; bars.forEach((b, i) => {
+    const env = 0.5 + 0.5 * Math.sin(t / 7 + i / 2.2) * Math.sin(t / 17);
+    b.style.height = (reduce ? 6 + 12 * Math.abs(Math.sin(i / 1.7)) : 4 + Math.max(0, env) * 20 * (0.55 + Math.random() * 0.45)).toFixed(1) + "px"; }); };
+  drawWave();
+  let secs = 14 * 60 + 32;
+  const clock = document.getElementById("clock");
+  if (!reduce) {
+    setInterval(drawWave, 100);
+    setInterval(() => { secs++; clock.textContent = [secs / 3600 | 0, (secs / 60 | 0) % 60, secs % 60].map(v => String(v).padStart(2, "0")).join(":"); }, 1000);
+  }
+
+  // The ribbon: lines from the real demo transcript stream left out of the pill.
+  const lines = [
+    ["Thanks for joining. Let's go through the launch checklist for the beta.", ""],
+    ["I think the beta build will be ready by Friday.", ""],
+    ["Great. How many testers are we starting with?", ""],
+    ["I think it's better to start the first group with 5 people.", ""],
+    ["Agreed. Who is sending the invitations?", ""],
+    ["I will send the invitation email on Monday morning.", ""],
+    ["Perfect. And the privacy page needs one more review before we share the link.", ""],
+    ["Legal can finish the review by Wednesday.", ""],
+    ["Then we're set. I'll send a summary after the call.", ""],
+  ];
+  const stream = document.getElementById("stream");
+  const fill = () => lines.forEach(([s, k]) => { const e = document.createElement("span"); e.textContent = s; if (k === "ko" && /[가-힣]/.test(s)) e.className = "ko"; stream.appendChild(e); });
+  fill(); fill();   // twice, so the loop is seamless
+  let x = 0, half = 0;
+  const measure = () => { half = stream.scrollWidth / 2; };
+  measure(); addEventListener("resize", measure);
+  // Sound comes in from the right; text comes out of the pill on the left.
+  const inWave = document.getElementById("in");
+  const inBars = Array.from({ length: 90 }, () => inWave.appendChild(document.createElement("b")));
+  let ph = 0;
+  const drawIn = () => { ph += 1; inBars.forEach((b, i) => {
+    const v = Math.abs(Math.sin((i + ph) / 4.2) * Math.sin((i + ph) / 11));
+    b.style.height = (4 + v * 30).toFixed(1) + "px"; }); };
+  drawIn();
+  // The stream starts at the pill and drifts left.
+  x = -half * 0.6;
+  stream.style.transform = `translate(${x}px, -50%)`;
+  const step = () => { x -= 0.6; if (-x >= half) x += half; stream.style.transform = `translate(${x}px, -50%)`; requestAnimationFrame(step); };
+  if (!reduce) { requestAnimationFrame(step); setInterval(drawIn, 60); }
+
+  // The product shot grows to full size as it scrolls into view (Apple-style).
+  const shot = document.getElementById("shot");
+  const grow = () => {
+    const r = shot.getBoundingClientRect(), vh = innerHeight;
+    const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.9)));
+    shot.style.transform = `scale(${(0.88 + 0.12 * p).toFixed(4)})`;
+  };
+  if (!reduce) { grow(); addEventListener("scroll", grow, { passive: true }); addEventListener("resize", grow); }
+
+  // Reveal: things rise into place as they enter. Everything is already visible if this never runs.
+  if (!reduce && "IntersectionObserver" in window) {
+    const els = document.querySelectorAll(".rise");
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.remove("pre"); io.unobserve(e.target); }
+    }), { rootMargin: "0px 0px -8% 0px" });
+    els.forEach(el => { if (el.getBoundingClientRect().top > innerHeight) { el.classList.add("pre"); io.observe(el); } });
+
+    // Typed lines: replay the words being written when they come into view.
+    const typed = document.querySelectorAll("[data-type]");
+    const tio = new IntersectionObserver(es => es.forEach(e => {
+      if (!e.isIntersecting) return; tio.unobserve(e.target);
+      const el = e.target, full = el.textContent, words = full.split(" ");
+      const h = el.getBoundingClientRect().height; el.style.minHeight = h + "px";
+      el.textContent = ""; el.classList.add("caret");
+      let i = 0; const delay = el.closest(".chat") ? 1100 : 300 + [...typed].indexOf(el) * 900;
+      setTimeout(function next() { i++; el.textContent = words.slice(0, i).join(" ");
+        if (i < words.length) setTimeout(next, 70 + Math.random() * 90); else setTimeout(() => el.classList.remove("caret"), 900); }, delay);
+    }), { threshold: 0.6 });
+    typed.forEach(el => tio.observe(el));
+  }
+})();
+</script>
+
+</html>
