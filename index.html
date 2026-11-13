@@ -177,7 +177,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
     <p class="sub">Audie records the call on your Mac and turns it into text as people speak. Claude can read every word.</p>
     <div class="cta">
       <a class="button" href="https://github.com/jungdjh/audie-updates/releases/latest/download/Audie.dmg">Download for Mac</a>
-      <small>Version 0.4.4, 3.5 MB. Free while in testing.</small>
+      <small>Version 0.4.5, 3.5 MB. Free while in testing.</small>
     </div>
   </section>
 
@@ -188,7 +188,7 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
   </div>
 
   <div class="wrap shot-wrap">
-    <img class="shot" id="shot" src="window.png" width="1440" height="1024" alt="Audie recording a meeting. Finished lines are white; the last line, still being spoken, is gray.">
+    <img class="shot" id="shot" src="window.png" width="1440" height="1024" alt="Audie recording a meeting. Finished lines are white; the last line, still being spoken, is gray. An Ask Claude box sits under the transcript.">
     <p class="caption">A real recording. Gray words are still being spoken. They turn white when the sentence ends.</p>
   </div>
 
@@ -206,8 +206,8 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
     <h2 class="rise">Words appear as they're said.</h2>
     <p class="sub rise">You see the first words about two seconds after someone starts talking. When they finish the sentence, it settles into the transcript.</p>
     <div class="trans" id="trans">
-      <div class="tl"><span class="who">the Seoul team · 0:12</span><span class="en" data-type>Great. How many testers are we starting with?</span></div>
-      <div class="tl"><span class="who">the Seoul team · 0:33</span><span class="en" data-type>Perfect. And the privacy page needs one more review before we share the link.</span></div>
+      <div class="tl"><span class="who">Maya · 0:12</span><span class="en" data-type>Great. How many testers are we starting with?</span></div>
+      <div class="tl"><span class="who">Maya · 0:32</span><span class="en" data-type>Perfect. And the privacy page needs one more review before we share the link.</span></div>
     </div>
   </section>
 
@@ -219,12 +219,12 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
 
   <section class="band alt">
     <h2 class="rise">Ask Claude what was said.</h2>
-    <p class="sub rise">Claude can start a recording and read the transcript, even while the meeting is still going.</p>
+    <p class="sub rise">Type a question under the transcript and Audie hands the meeting to Claude, on the website or in the Claude app. Even while the meeting is still going.</p>
     <div class="chat" id="chat">
       <div class="msg you rise">Who's doing what after this call?</div>
-      <div class="msg claude rise"><span class="from">Claude</span><span data-type>The Seoul team has the beta build ready by Friday and sends the tester invitations Monday morning. Legal reviews the privacy page by Wednesday. You're sending a summary after the call.</span></div>
+      <div class="msg claude rise"><span class="from">Claude</span><span data-type>Maya has the beta build ready by Friday and sends the tester invitations Monday morning. Legal finishes reviewing the privacy page by Wednesday. You're sending a summary after the call.</span></div>
     </div>
-    <p class="caption rise">Works with Claude Code in one click. Without it, Open in Claude copies the transcript for you.</p>
+    <p class="caption rise">Works with Claude on the web, the Claude app, and Claude Code. With Claude Code, Claude can also start recordings and follow along by itself.</p>
   </section>
 
   <section class="band">
@@ -239,9 +239,9 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
         <li class="rise"><div><b>Download and drag to Applications.</b><span>Signed by the developer and checked by Apple.</span></div></li>
         <li class="rise"><div><b>Allow the two permissions.</b><span>A short guide walks you through System Audio Recording and the Microphone.</span></div></li>
         <li class="rise"><div><b>Let the speech model download.</b><span>1.5 GB, once. You can record while it downloads.</span></div></li>
-        <li class="rise"><div><b>Connect Claude, if you like.</b><span>Optional. After this, Audie keeps itself up to date.</span></div></li>
+        <li class="rise"><div><b>Pick the Claude you use.</b><span>The website, the Claude app, or Claude Code. After this, Audie keeps itself up to date.</span></div></li>
       </ol>
-      <img class="welcome rise" src="welcome.jpg" width="560" height="540" alt="Audie's welcome guide with its four steps.">
+      <img class="welcome rise" src="welcome.png" width="1120" height="1124" alt="Audie's welcome guide with its four steps.">
     </div>
   </section>
 
@@ -250,7 +250,6 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
     <div class="faq">
       <details><summary>Which Macs does it run on?</summary><p>Macs with Apple silicon (M1 or later) on macOS 14.2 or later, with about 2 GB free.</p></details>
       <details><summary>Do I need to tell people I'm recording?</summary><p>Yes. Many places require everyone's consent, and your workplace may have its own rules. Audie reminds you every time you start.</p></details>
-      <details><summary>Which languages does it understand?</summary><p>English, Korean, and a mix of the two in the same meeting.</p></details>
       <details><summary>What does it cost?</summary><p>Nothing. Audie is free while it's tested with a small group.</p></details>
       <details><summary>My work network blocked the speech model.</summary><p>Email David for the model file, then use Settings › Speech › Import.</p></details>
     </div>
@@ -303,17 +302,17 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
   // The ribbon: lines from the real demo transcript stream left out of the pill.
   const lines = [
     ["Thanks for joining. Let's go through the launch checklist for the beta.", ""],
-    ["I think the beta build will be ready by Friday.", ""],
+    ["The beta build should be ready by Friday.", ""],
     ["Great. How many testers are we starting with?", ""],
-    ["I think it's better to start the first group with 5 people.", ""],
+    ["Let's start small. 5 people for the first group.", ""],
     ["Agreed. Who is sending the invitations?", ""],
-    ["I will send the invitation email on Monday morning.", ""],
+    ["I'll send the invitation email on Monday morning.", ""],
     ["Perfect. And the privacy page needs one more review before we share the link.", ""],
-    ["Legal can finish the review by Wednesday.", ""],
+    ["Legal said they can finish the review by Wednesday.", ""],
     ["Then we're set. I'll send a summary after the call.", ""],
   ];
   const stream = document.getElementById("stream");
-  const fill = () => lines.forEach(([s, k]) => { const e = document.createElement("span"); e.textContent = s; if (k === "ko" && /[가-힣]/.test(s)) e.className = "ko"; stream.appendChild(e); });
+  const fill = () => lines.forEach(([s, k]) => { const e = document.createElement("span"); e.textContent = s; stream.appendChild(e); });
   fill(); fill();   // twice, so the loop is seamless
   let x = 0, half = 0;
   const measure = () => { half = stream.scrollWidth / 2; };
