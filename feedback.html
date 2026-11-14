@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Audie Feedback</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="_sub.css">
+<div class="wrap">
+  <a class="top" href="./"><img src="icon.png" alt="" width="26" height="26">Audie</a>
+  <h1>Send feedback</h1>
+  <p>Tell David what worked, what broke, and what you wish Audie did. Short is fine. Screenshots help.</p>
+  <div class="box">
+    <p style="margin:0 0 14px"><strong>Good things to mention:</strong> what you were doing, what you expected, what happened instead.</p>
+    <a class="button" id="mail" href="mailto:jungdjh@gmail.com?subject=Audie%20feedback">Write an email</a>
+    <p class="note" style="margin:14px 0 0">Or write to <span id="addr" style="color:var(--ink);font-weight:600;user-select:all">jungdjh@gmail.com</span>. <span id="ver"></span></p>
+  </div>
+  <p class="note">Your meetings never leave your Mac unless you attach something yourself. Please don't paste confidential transcripts into an email.</p>
+  <footer><a href="./">Audie</a> · <a href="privacy.html">Privacy and terms</a></footer>
+</div>
+<script>
+(() => {
+  try { if (localStorage.getItem("audie-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}
+  const q = new URLSearchParams(location.search);
+  const v = q.get("v"), os = q.get("macos");
+  if (v) {
+    const info = "Audie " + v + (os ? ", macOS " + os : "");
+    document.getElementById("ver").textContent = "Your version: " + info + ".";
+    const body = "\n\n—\n" + info;
+    document.getElementById("mail").href = "mailto:jungdjh@gmail.com?subject=" + encodeURIComponent("Audie feedback (" + v + ")") + "&body=" + encodeURIComponent(body);
+  }
+})();
+</script>
+
+</html>

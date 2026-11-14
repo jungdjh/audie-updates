@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Audie Privacy and Terms</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="_sub.css">
+<div class="wrap">
+  <a class="top" href="./"><img src="icon.png" alt="" width="26" height="26">Audie</a>
+  <h1>Privacy and terms</h1>
+  <p class="note">Last updated November 14, 2026</p>
+  <p>Audie is a meeting recorder for Mac made by David Jung ("I", "me"). This page says what Audie does with your data and the terms for using it.</p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li><strong>Your audio and transcripts stay on your Mac.</strong> Audie has no account, no server and no cloud storage. I never receive your recordings or transcripts.</li>
+    <li><strong>Text goes to Anthropic only when Claude reads it.</strong> If you ask Claude about a meeting, that transcript text becomes part of your Claude conversation, under your agreement with Anthropic. Audie itself sends nothing to Anthropic.</li>
+    <li><strong>I collect nothing about how you use Audie.</strong> No analytics, no crash reports, no tracking.</li>
+  </ul>
+
+  <h2>What Audie stores on your Mac</h2>
+  <p>In <code>~/Library/Application Support/Audie/</code>, or a meetings folder you choose in Settings › Recording:</p>
+  <table>
+    <tr><th>What</th><th>Kept</th></tr>
+    <tr><td>Meeting audio</td><td>30 days by default (7, 90 days or forever in Settings). Never deleted before its transcript is made.</td></tr>
+    <tr><td>Transcripts, meeting details, how you filed a meeting (section, pinned, archived)</td><td>Until you delete the meeting</td></tr>
+    <tr><td>English translations of lines in other languages, if live translation is on</td><td>Until you delete the meeting</td></tr>
+    <tr><td>Settings, your custom words, an activity log (meeting titles and technical events, no transcript text)</td><td>Until you delete Audie's folder</td></tr>
+    <tr><td>The speech model (1.5 GB)</td><td>Until you delete Audie's folder</td></tr>
+  </table>
+  <p>If you pick a meetings folder inside iCloud Drive, Google Drive, Dropbox or OneDrive, that service copies your recordings to its cloud under its own terms. Audie warns you when you pick one.</p>
+
+  <h2>When Audie uses the internet</h2>
+  <p>Only for these, and none of them include your recordings or transcripts:</p>
+  <ul>
+    <li><strong>Updates.</strong> About once a day Audie downloads a small update list from GitHub. GitHub sees your IP address, as with any download.</li>
+    <li><strong>The speech model,</strong> downloaded once from GitHub, or from Hugging Face if that fails. You can also import it from a file.</li>
+    <li><strong>Live translation.</strong> Done on your Mac by macOS. If the language files aren't installed, macOS downloads them from Apple under Apple's terms.</li>
+    <li><strong>Open in Claude and the Ask box</strong> copy a transcript and open claude.ai or the Claude app. Nothing is sent until you paste it and send it yourself.</li>
+    <li><strong>Send Feedback</strong> opens a web page with my email address. You decide what to write.</li>
+  </ul>
+
+  <h2>Claude</h2>
+  <p>Audie works with Claude, Anthropic's AI assistant. With Claude Code connected, Claude can start and stop recordings and read your transcripts through the <code>audie</code> command on your Mac. Whatever Claude reads is handled under <a href="https://www.anthropic.com/legal/privacy">Anthropic's privacy policy</a> and your Claude plan's terms, not by me. You can disconnect Claude Code any time in Settings › Claude. Audie is an independent project; it isn't made or endorsed by Anthropic.</p>
+
+  <h2>Your control</h2>
+  <ul>
+    <li>Delete any meeting (Move to Trash), or delete files directly from its folder.</li>
+    <li>Pause a recording at any time. Nothing is saved while paused.</li>
+    <li>Turn live translation off in Settings › Speech.</li>
+    <li>Uninstall: delete Audie from Applications and the folder <code>~/Library/Application Support/Audie</code>.</li>
+  </ul>
+
+  <h2>Terms of use</h2>
+  <ul>
+    <li><strong>Testing software.</strong> Audie is free and in testing. It's provided as is, without warranties, and may have bugs or lose data. Keep copies of anything important.</li>
+    <li><strong>Recording laws and consent are your responsibility.</strong> Many places, including California, require everyone's consent before a conversation is recorded, and your workplace may have its own rules. Audie reminds you each time you record. You agree to follow the laws and policies that apply to you.</li>
+    <li><strong>Accuracy.</strong> Transcripts and translations are made by AI and can be wrong, especially for names and overlapping speech. Check before relying on them for anything important.</li>
+    <li><strong>Your content is yours.</strong> I claim no rights to your recordings or transcripts and don't receive them.</li>
+    <li><strong>Other services</strong> (Anthropic's Claude, GitHub, Hugging Face, Apple) are governed by their own terms.</li>
+    <li><strong>Included software.</strong> Audie includes open-source software (WhisperKit, Sparkle) and OpenAI's Whisper model (MIT License), listed in Settings › About.</li>
+    <li><strong>Liability.</strong> As far as the law allows, I'm not liable for indirect damages or data loss from using Audie. These terms are governed by the laws of California.</li>
+    <li><strong>Changes.</strong> If Audie starts sending anything new, I'll update this page and say so in the release notes before it ships.</li>
+  </ul>
+
+  <h2>Questions</h2>
+  <p>Email <a href="mailto:jungdjh@gmail.com?subject=Audie%20privacy">jungdjh@gmail.com</a>. Audie isn't meant for children under 13.</p>
+  <footer><a href="./">Audie</a> · <a href="feedback.html">Send feedback</a></footer>
+</div>
+<script>try { if (localStorage.getItem("audie-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}</script>
+
+</html>
