@@ -319,7 +319,15 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
   measure(); addEventListener("resize", measure);
   // Sound comes in from the right; text comes out of the pill on the left.
   const inWave = document.getElementById("in");
-  const inBars = Array.from({ length: 90 }, () => inWave.appendChild(document.createElement("b")));
+  // Enough bars to reach the right edge at any window width (3 px bar + 5 px gap each).
+  const inBars = [];
+  const buildIn = () => {
+    const n = Math.ceil(Math.max(0, inWave.clientWidth - 120) / 8) + 4;
+    while (inBars.length < n) inBars.push(inWave.appendChild(document.createElement("b")));
+    while (inBars.length > n) inBars.pop().remove();
+  };
+  buildIn();
+  addEventListener("resize", () => { buildIn(); drawIn(); });
   let ph = 0;
   const drawIn = () => { ph += 1; inBars.forEach((b, i) => {
     const v = Math.abs(Math.sin((i + ph) / 4.2) * Math.sin((i + ph) / 11));
