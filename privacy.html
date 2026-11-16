@@ -9,14 +9,14 @@
 <div class="wrap">
   <a class="top" href="./"><img src="icon.png" alt="" width="26" height="26">Audie</a>
   <h1>Privacy and terms</h1>
-  <p class="note">Last updated November 14, 2026</p>
-  <p>Audie is a meeting recorder for Mac made by David Jung ("I", "me"). This page says what Audie does with your data and the terms for using it.</p>
+  <p class="note">Last updated November 16, 2026</p>
+  <p>Audie is a meeting recorder for Mac, with a Windows test build, made by David Jung ("I", "me"). This page says what Audie does with your data and the terms for using it.</p>
 
   <h2>The short version</h2>
   <ul>
     <li><strong>Your audio and transcripts stay on your Mac.</strong> Audie has no account, no server and no cloud storage. I never receive your recordings or transcripts.</li>
     <li><strong>Text goes to Anthropic only when Claude reads it.</strong> If you ask Claude about a meeting, that transcript text becomes part of your Claude conversation, under your agreement with Anthropic. Audie itself sends nothing to Anthropic.</li>
-    <li><strong>I collect nothing about how you use Audie.</strong> No analytics, no crash reports, no tracking.</li>
+    <li><strong>I collect nothing about how you use Audie.</strong> No analytics and no tracking. Crash reports stay on your Mac unless you choose to send one.</li>
   </ul>
 
   <h2>What Audie stores on your Mac</h2>
@@ -28,18 +28,26 @@
     <tr><td>English translations of lines in other languages, if live translation is on</td><td>Until you delete the meeting</td></tr>
     <tr><td>Settings, your custom words, an activity log (meeting titles and technical events, no transcript text)</td><td>Until you delete Audie's folder</td></tr>
     <tr><td>The speech model (1.5 GB)</td><td>Until you delete Audie's folder</td></tr>
+    <tr><td>Crash reports, if Audie has crashed</td><td>Until you delete them or Audie's folder</td></tr>
   </table>
   <p>If you pick a meetings folder inside iCloud Drive, Google Drive, Dropbox or OneDrive, that service copies your recordings to its cloud under its own terms. Audie warns you when you pick one.</p>
 
   <h2>When Audie uses the internet</h2>
   <p>Only for these, and none of them include your recordings or transcripts:</p>
   <ul>
-    <li><strong>Updates.</strong> About once a day Audie downloads a small update list from GitHub. GitHub sees your IP address, as with any download.</li>
-    <li><strong>The speech model,</strong> downloaded once from GitHub, or from Hugging Face if that fails. You can also import it from a file.</li>
+    <li><strong>Updates.</strong> About once a day Audie downloads a small update list from GitHub. When there is a new version, Audie downloads and installs it, unless you turn that off in Settings › About. GitHub sees your IP address and Audie's version number, as with any download.</li>
+    <li><strong>The speech model,</strong> downloaded once from GitHub, or from Hugging Face if that fails. Whichever one serves the file sees your IP address. You can also import the model from a file.</li>
     <li><strong>Live translation.</strong> Done on your Mac by macOS. If the language files aren't installed, macOS downloads them from Apple under Apple's terms.</li>
     <li><strong>Open in Claude and the Ask box</strong> copy a transcript and open claude.ai or the Claude app. Nothing is sent until you paste it and send it yourself.</li>
-    <li><strong>Send Feedback</strong> opens a web page with my email address. You decide what to write.</li>
+    <li><strong>Send Feedback</strong> opens a page on Audie's website in your browser. The page address includes Audie's version and your macOS version, and nothing else. GitHub hosts the page, so GitHub sees your IP address and those two version numbers when the page opens. I see nothing unless you send me an email.</li>
   </ul>
+
+  <h2>Download counts, crash reports and feedback</h2>
+  <p><strong>Download counts.</strong> GitHub hosts Audie's downloads and counts how many times each file is downloaded. I look at those totals to estimate how many Macs run each version. The totals are plain numbers. They contain nothing about you or your Mac.</p>
+  <p><strong>Crash reports, only if you turn them on.</strong> If Audie crashes, macOS gives Audie a short report after it next opens. Audie saves it on your Mac, in its own folder. Audie does not send it. If you turn on Settings › About › Crash reports, Audie asks whether you want to send the report. If you say yes, Audie copies the report and opens the feedback page. You can read it first, and you paste it and send it yourself.</p>
+  <p>A report holds the time of the crash, Audie's version, your macOS version, the type of processor in your Mac, the kind of crash, a short reason from macOS, and where in Audie's code it happened. Audie removes file and folder names from it. It never includes your recordings, transcripts or meeting names.</p>
+  <p><strong>If you email me.</strong> I get your email address and whatever you write or attach. I use it only to reply and to fix Audie. I don't share it or add you to any list. Ask me to delete it and I will.</p>
+  <p><strong>This website.</strong> GitHub hosts this site and sees your IP address when you visit, under <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The site has no cookies, no analytics and no tracking. If you switch to the dark theme, your browser remembers that choice on your device.</p>
 
   <h2>Claude</h2>
   <p>Audie works with Claude, Anthropic's AI assistant. With Claude Code connected, Claude can start and stop recordings and read your transcripts through the <code>audie</code> command on your Mac. Whatever Claude reads is handled under <a href="https://www.anthropic.com/legal/privacy">Anthropic's privacy policy</a> and your Claude plan's terms, not by me. You can disconnect Claude Code any time in Settings › Claude. Audie is an independent project; it isn't made or endorsed by Anthropic.</p>
@@ -49,23 +57,33 @@
     <li>Delete any meeting (Move to Trash), or delete files directly from its folder.</li>
     <li>Pause a recording at any time. Nothing is saved while paused.</li>
     <li>Turn live translation off in Settings › Speech.</li>
+    <li>Delete crash reports from Settings › About › Crash reports › Show, or turn the offer off there.</li>
     <li>Uninstall: delete Audie from Applications and the folder <code>~/Library/Application Support/Audie</code>.</li>
   </ul>
 
   <h2>Terms of use</h2>
   <ul>
     <li><strong>Testing software.</strong> Audie is free and in testing. It's provided as is, without warranties, and may have bugs or lose data. Keep copies of anything important.</li>
-    <li><strong>Recording laws and consent are your responsibility.</strong> Many places, including California, require everyone's consent before a conversation is recorded, and your workplace may have its own rules. Audie reminds you each time you record. You agree to follow the laws and policies that apply to you.</li>
+    <li><strong>Recording laws and consent are your responsibility.</strong> Many places, including California, require everyone's consent before a conversation is recorded, and your workplace may have its own rules. Audie reminds you each time you record unless you turn the reminder off. You agree to follow the laws and policies that apply to you.</li>
     <li><strong>Accuracy.</strong> Transcripts and translations are made by AI and can be wrong, especially for names and overlapping speech. Check before relying on them for anything important.</li>
     <li><strong>Your content is yours.</strong> I claim no rights to your recordings or transcripts and don't receive them.</li>
-    <li><strong>Other services</strong> (Anthropic's Claude, GitHub, Hugging Face, Apple) are governed by their own terms.</li>
+    <li><strong>Other services</strong> are governed by their own terms and privacy policies: <a href="https://www.anthropic.com/legal/privacy">Anthropic</a>, <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub</a>, <a href="https://huggingface.co/privacy">Hugging Face</a> and <a href="https://www.apple.com/legal/privacy/">Apple</a>.</li>
     <li><strong>Included software.</strong> Audie includes open-source software (WhisperKit, Sparkle) and OpenAI's Whisper model (MIT License), listed in Settings › About.</li>
     <li><strong>Liability.</strong> As far as the law allows, I'm not liable for indirect damages or data loss from using Audie. These terms are governed by the laws of California.</li>
     <li><strong>Changes.</strong> If Audie starts sending anything new, I'll update this page and say so in the release notes before it ships.</li>
   </ul>
 
+  <h2>Audie for Windows (test build)</h2>
+  <p>The Windows test build follows the same rules. Your audio and transcripts stay on your PC, in <code>%LOCALAPPDATA%\Audie Data</code>. It has no account and sends nothing to me.</p>
+  <ul>
+    <li>It uses the internet only to download the speech model once, from GitHub, or from Hugging Face if that fails. Whichever one serves the file sees your IP address. It does not check for updates yet.</li>
+    <li>It deletes recorded audio after 30 days by default, like the Mac, and keeps transcripts.</li>
+    <li>It keeps a log of technical events, including details of any crash. The log leaves out your user name, meeting titles and transcript text. It stays on your PC unless you email it to me.</li>
+    <li>To remove everything, uninstall Audie and delete the <code>Audie Data</code> folder.</li>
+  </ul>
+
   <h2>Questions</h2>
-  <p>Email <a href="mailto:jungdjh@gmail.com?subject=Audie%20privacy">jungdjh@gmail.com</a>. Audie isn't meant for children under 13.</p>
+  <p>Email <a href="mailto:jungdjh@gmail.com?subject=Audie%20privacy">jungdjh@gmail.com</a>. I am the only person responsible for Audie. If you have sent me an email or a crash report, you can ask me for a copy or ask me to delete it. Audie isn't meant for children under 13.</p>
   <footer><a href="./">Audie</a> · <a href="feedback.html">Send feedback</a></footer>
 </div>
 <script>try { if (localStorage.getItem("audie-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark"); } catch (e) {}</script>
