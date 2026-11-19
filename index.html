@@ -150,6 +150,16 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
   .rise, .rise.pre { transform: none; opacity: 1; transition: none; }
   .button:hover { transform: none; }
 }
+.who-demo { margin-top: 56px; width: 100%; max-width: 860px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 40px; text-align: left; align-items: start; }
+.who-demo .trans { margin-top: 0; gap: 24px; }
+.who-demo .tl .en { font-size: clamp(20px, 2.4vw, 26px); }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 8px; vertical-align: 1px; }
+.people { background: var(--bg); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; font-size: 17px; }
+.people .t { font-weight: 600; margin-bottom: 6px; }
+.people .g { display: flex; justify-content: space-between; font-size: 13px; color: var(--gray); margin: 14px 0 4px; }
+.people .p { display: flex; align-items: center; padding: 4px 0; }
+.people .p span:last-child { margin-left: auto; color: var(--gray); font-size: 15px; font-variant-numeric: tabular-nums; }
+@media (max-width: 760px) { .who-demo { grid-template-columns: 1fr; gap: 32px; } }
 </style>
 
 <header>
@@ -209,14 +219,34 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
   </section>
 
   <section class="band">
+    <h2 class="rise">Knows who said what.</h2>
+    <p class="sub rise">After the meeting, Audie tells the voices apart on your Mac. Name someone once and every line updates. Put people in groups, like your team and theirs, and see how much each side talked.</p>
+    <div class="who-demo rise">
+      <div class="trans">
+        <div class="tl"><span class="who"><span class="dot" style="background:#1D9E75"></span>Maya · 0:12</span><span class="en">Great. How many testers are we starting with?</span></div>
+        <div class="tl"><span class="who"><span class="dot" style="background:#378ADD"></span>You · 0:18</span><span class="en">Five this week, then twenty in February.</span></div>
+        <div class="tl"><span class="who"><span class="dot" style="background:#B8693F"></span>Sam · 0:25</span><span class="en">We can take three of them.</span></div>
+      </div>
+      <div class="people" aria-label="Participants: Our team, You 41% and Maya 17%; Acme, Sam 42%">
+        <div class="t">Participants</div>
+        <div class="g"><span>Our team</span><span>58%</span></div>
+        <div class="p"><span class="dot" style="background:#378ADD"></span><span>You</span><span>41%</span></div>
+        <div class="p"><span class="dot" style="background:#1D9E75"></span><span>Maya</span><span>17%</span></div>
+        <div class="g"><span>Acme</span><span>42%</span></div>
+        <div class="p"><span class="dot" style="background:#B8693F"></span><span>Sam</span><span>42%</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band alt">
     <h2 class="rise">Small while you talk.</h2>
     <p class="sub rise">During a call Audie is a slim bar with a timer and a sound wave. Open the full window when you want to read along.</p>
     <img class="bar rise" src="bar.png" width="840" height="172" alt="Audie's small recording bar with a timer, the meeting name, pause, stop and a sound wave.">
   </section>
 
-  <section class="band alt">
+  <section class="band">
     <h2 class="rise">Ask Claude what was said.</h2>
-    <p class="sub rise">Type a question under the transcript and Audie hands the meeting to Claude, on Claude.ai or in Claude Desktop. Even while the meeting is still going.</p>
+    <p class="sub rise">Click Ask in Claude. Audie copies the meeting and opens Claude.ai or Claude Desktop, so you paste and ask anything. Even while the meeting is still going.</p>
     <div class="chat" id="chat">
       <div class="msg you rise">Who's doing what after this call?</div>
       <div class="msg claude rise"><span class="from">Claude</span><span data-type>Maya has the beta build ready by Friday and sends the tester invitations Monday morning. Legal finishes reviewing the privacy page by Wednesday. You're sending a summary after the call.</span></div>
@@ -224,12 +254,12 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
     <p class="caption rise">Works with Claude.ai, Claude Desktop, and Claude Code. With Claude Code, Claude can also start recordings and follow along by itself.</p>
   </section>
 
-  <section class="band">
+  <section class="band alt">
     <h2 class="rise">Your Mac. Your files.</h2>
     <p class="sub rise">No account and no Audie server. Recordings are ordinary files in a folder on your Mac. Transcript text goes to Anthropic only when you ask Claude to read it.</p>
   </section>
 
-  <section class="band alt" id="start">
+  <section class="band" id="start">
     <h2 class="rise">Ready in a minute.</h2>
     <div class="steps">
       <ol>
@@ -242,17 +272,18 @@ footer { border-top: 1px solid var(--line); padding-block: 22px 40px; font-size:
     </div>
   </section>
 
-  <section class="band" id="faq">
+  <section class="band alt" id="faq">
     <h2 class="rise">Questions.</h2>
     <div class="faq">
       <details><summary>Which Macs does it run on?</summary><p>Macs with Apple silicon (M1 or later) on macOS 14.2 or later, with about 2 GB free.</p></details>
       <details><summary>Do I need to tell people I'm recording?</summary><p>Yes. Many places require everyone's consent, and your workplace may have its own rules. Audie reminds you every time you start, unless you turn the reminder off.</p></details>
+      <details><summary>Does Audie keep people's voices?</summary><p>No. It tells voices apart within one meeting and keeps only the names you type. The one voice it can learn is yours, so it can find you in a room.</p></details>
       <details><summary>What does it cost?</summary><p>Nothing. Audie is free while it's tested with a small group.</p></details>
       <details><summary>My work network blocked the speech model.</summary><p>Email David for the model file, then use Settings › Speech › Import.</p></details>
     </div>
   </section>
 
-  <section class="band alt end">
+  <section class="band end">
     <h2 class="rise">Try it in your next meeting.</h2>
     <a class="button rise" href="https://github.com/jungdjh/audie-updates/releases/latest/download/Audie.dmg">Download for Mac</a>
     <p class="sub rise" style="font-size:19px">Questions or problems? Email David at <a class="addr" href="mailto:jungdjh@gmail.com?subject=Audie">jungdjh@gmail.com</a>.</p>
